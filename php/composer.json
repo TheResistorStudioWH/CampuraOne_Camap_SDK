@@ -1,0 +1,1 @@
+{"name":"campura/camap","version":"0.1.0","description":"CAMAP 0.1 reader, writer, validator and merge engine","license":"proprietary","require":{"php":"^8.3"},"autoload":{"psr-4":{"Campura\\Camap\\":"src/"}}}

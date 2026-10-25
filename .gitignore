@@ -1,0 +1,7 @@
+**/node_modules/
+**/dist/
+**/.dart_tool/
+.build/
+.swiftpm/
+.DS_Store
+*.log

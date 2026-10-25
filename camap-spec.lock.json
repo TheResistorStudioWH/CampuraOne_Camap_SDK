@@ -1,0 +1,7 @@
+{
+  "formatVersion": "0.1.0",
+  "specRepository": "https://github.com/TheResistorStudioWH/CampuraOne_Camap",
+  "schemaPath": "schemas/document.schema.json",
+  "schemaSHA256": "d2640a863b17ca58e2bb6a39c809fcaa6605773917244166a4172f63ce25b29c",
+  "note": "Schema snapshot digest; pin a release tag when publishing SDK versions."
+}
