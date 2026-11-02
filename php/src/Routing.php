@@ -7,7 +7,7 @@ final class Routing
 {
     public array $nodes = [], $edges = [], $features = [], $frames = [], $unsafeEdges = [];
     private array $adj = [], $buildingCells = [], $largeBuildings = [], $unsafeSet = [];
-    public function __construct(public readonly array $document)
+    public function __construct(public readonly array $document, public readonly array $edgeGroups = [])
     {
         Camap::validate($document);
         foreach (['nodes', 'edges', 'features', 'frames'] as $collection) {
@@ -28,6 +28,19 @@ final class Routing
             $this->adj[$e['from']][] = [$e['to'], $id, false];
             if (!$e['oneWay']) $this->adj[$e['to']][] = [$e['from'], $id, true];
         }
+    }
+    public function edgeRoot(string $id): string {
+        foreach ($this->edgeGroups as $root=>$group) if (in_array($id,$group['edgeIDs'],true)) return $root;
+        return $id;
+    }
+    public function roadEdges(string $id): array {
+        return $this->edgeGroups[$this->edgeRoot($id)]['edgeIDs'] ?? [$id];
+    }
+    public function roadGeometry(string $id): array {
+        return $this->edgeGroups[$this->edgeRoot($id)]['polyline'] ?? $this->edges[$id]['polyline'];
+    }
+    public function roadPolylines(string $id): array {
+        return $this->edgeGroups[$this->edgeRoot($id)]['polylines'] ?? [$this->roadGeometry($id)];
     }
     public static function length(array $points): float
     {
