@@ -2,6 +2,8 @@
 
 四种语言共用 CAMAP 0.1.0 文件格式，分别构建。格式规范由独立仓库 `CampuraOne_Camap` 管理；本仓库不依赖其工作目录。固定的规范版本与 Schema 摘要记录在 `camap-spec.lock.json`。
 
+需要对齐 Apple 底图时，可使用 [Mac 原生对点校准工具](tools/mapkit-calibration/README.md)。一个锚点只修正平移，两个分散地标独立验证；通过后导出独立 `mapkit` 绑定及校准记录。近似坐标转换只用于初始候选，不作为验证数据。Swift 的 `TranslationCalibration` 提供相同的求解、验证与保留几何的文档更新接口。Xcode 仍只需选择 `CamapKit` library 产品。
+
 ## 目录与能力
 
 | 目录 | 用途 | 本版能力 |
