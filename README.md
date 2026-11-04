@@ -22,6 +22,8 @@
 import CamapKit
 let document = try Camap.read(from: fileURL)
 try Camap.write(document, to: anotherURL)
+// 高德 GCJ-02 → 近似 WGS-84，x 为经度、y 为纬度：
+let gps = try CoordinateConversion.gcj02ToWGS84(Point(114.398994, 30.370608))
 ```
 
 也可先用 Xcode 的 Add Local Package 选择本仓库根目录。学生端 UI 尚未接入；SDK 不会自行请求定位、加载地图或生成室内导航。
@@ -61,3 +63,5 @@ node tools/cli/camap.mjs from-json campus.json campus.camap
 ```
 
 文件内使用局部米制坐标。AMap 与 MapKit 分别保存绑定，不能直接复用 GCJ-02 与 WGS84 经纬度；投影函数不承担两者转换。示例只使用未绑定真实位置的演示校区。
+
+Swift 的 `CoordinateConversion.gcj02ToWGS84` 是常用算法的近似反算，不是高德官方接口；仅提供粗略的经纬度范围检查，区域边界和转换精度不保证。无效、超范围或未收敛会抛错。结果适合生成候选坐标；用于 MapKit 校准、校园地标或导航之前，必须在实际底图和多个已知点核对误差。它只转换单点，不会自动生成或写入 mapkit 绑定，也不会解决旋转、比例或原始测绘误差。其他语言 SDK 暂未提供此转换。

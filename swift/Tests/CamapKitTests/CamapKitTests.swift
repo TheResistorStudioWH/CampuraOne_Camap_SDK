@@ -24,6 +24,18 @@ final class CamapKitTests: XCTestCase {
     XCTAssertEqual(p.x, back.x, accuracy: 0.0001)
     XCTAssertEqual(p.y, back.y, accuracy: 0.0001)
   }
+  func testGCJ02ApproximateInverseAndInvalidInputs() throws {
+    // Independently established WGS-84 / GCJ-02 reference pair in Beijing.
+    let result = try CoordinateConversion.gcj02ToWGS84(Point(116.403372494, 39.917930749))
+    XCTAssertEqual(result.x, 116.397128, accuracy: 0.000002)
+    XCTAssertEqual(result.y, 39.916527, accuracy: 0.000002)
+    XCTAssertThrowsError(try CoordinateConversion.gcj02ToWGS84(Point(.nan, 30))) {
+      XCTAssertEqual($0 as? CoordinateConversion.Error, .invalidCoordinate)
+    }
+    XCTAssertThrowsError(try CoordinateConversion.gcj02ToWGS84(Point(-0.1276, 51.5072))) {
+      XCTAssertEqual($0 as? CoordinateConversion.Error, .outsideSupportedArea)
+    }
+  }
   func testInvalidReference() throws {
     var d = try Camap.read(
       from: Bundle.module.url(
